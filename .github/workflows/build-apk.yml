@@ -29,6 +29,19 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          accept-android-sdk-licenses: true
+          cmdline-tools-version: 16.0
+
+      - name: Install Android SDK packages
+        shell: bash
+        run: |
+          set -euxo pipefail
+          sdkmanager --sdk_root="${ANDROID_SDK_ROOT}" \
+            "platform-tools" \
+            "platforms;android-34" \
+            "build-tools;34.0.0"
+          yes | sdkmanager --sdk_root="${ANDROID_SDK_ROOT}" --licenses >/dev/null
 
       - name: Build Android Debug APK
         run: |
